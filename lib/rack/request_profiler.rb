@@ -94,7 +94,7 @@ module Rack
       ::File.open(@path + filename, 'w+') do |f|
         printer.print(f)
       end
-      abs_filename
+      abs_filename.to_s
     end
   end
 end
