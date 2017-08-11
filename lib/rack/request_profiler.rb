@@ -28,7 +28,7 @@ module Rack
       if mode
         result = ::RubyProf.stop
         filename = write_result(result, request)
-        Launchy.open(filename) if browser_enabled
+        ::Launchy.open(filename) if browser_enabled
       end
 
       [status, headers, body]
@@ -90,10 +90,11 @@ module Rack
       Dir.mkdir(@path) unless ::File.exist?(@path)
       url = request.fullpath.gsub(/[?\/]/, '-')
       filename = "#{prefix(printer)}#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}-#{url.slice(0, 50)}.#{format(printer)}"
+      abs_filename = @path + filename
       ::File.open(@path + filename, 'w+') do |f|
         printer.print(f)
       end
-      filename
+      abs_filename
     end
   end
 end
