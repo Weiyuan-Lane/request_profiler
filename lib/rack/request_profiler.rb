@@ -28,7 +28,7 @@ module Rack
       if mode
         result = ::RubyProf.stop
         filename = write_result(result, request)
-        Launchy::Browser.run(filename) if browser_enabled
+        ::Launchy.open(filename) if browser_enabled
       end
 
       [status, headers, body]
