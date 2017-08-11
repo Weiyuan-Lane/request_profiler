@@ -1,4 +1,5 @@
 require 'ruby-prof'
+require 'launchy'
 
 module Rack
   class RequestProfiler
