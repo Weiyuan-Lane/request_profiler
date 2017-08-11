@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'ruby-prof'
   s.add_dependency 'rack'
+  s.add_dependency 'launchy', '~> 2.4', '>= 2.4.3'
 
   s.add_development_dependency 'test-unit', '~> 3.2'
   s.add_development_dependency 'rake', '~> 11.2', '>= 11.2.2'

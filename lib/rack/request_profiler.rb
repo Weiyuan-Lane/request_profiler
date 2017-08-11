@@ -16,6 +16,7 @@ module Rack
     def call(env)
       request = Rack::Request.new(env)
       mode = profile_mode(request)
+      browser_enabled = profile_browser_mode(request)
 
       if mode
         ::RubyProf.measure_mode = mode
@@ -25,7 +26,8 @@ module Rack
 
       if mode
         result = ::RubyProf.stop
-        write_result(result, request)
+        filename = write_result(result, request)
+        Launchy::Browser.run(filename) if browser_enabled
       end
 
       [status, headers, body]
@@ -39,6 +41,15 @@ module Rack
         else
           ::RubyProf.const_get(mode_string.upcase)
         end
+      end
+    end
+
+    def profile_browser_mode(request)
+      mode_string = request.params["profile_request"]
+      if mode_string && (mode_string.downcase == "true" or mode_string == "1")
+        true
+      else
+        false
       end
     end
 
@@ -81,6 +92,7 @@ module Rack
       ::File.open(@path + filename, 'w+') do |f|
         printer.print(f)
       end
+      filename
     end
   end
 end
